@@ -1,0 +1,32 @@
+name: Build Pygame Web Game
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get game files
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pygbag
+        run: python -m pip install --upgrade pygbag
+
+      - name: Build web game
+        run: python -m pygbag --build .
+
+      - name: Save web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: cupcake-sky-quest-web
+          path: build/web/
